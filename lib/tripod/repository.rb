@@ -55,7 +55,7 @@ module Tripod::Repository
     g
   end
 
-  def retrieve_triples_from_database(accept_header="application/n-triples")
+  def retrieve_triples_from_database(accept_header="text/plain")
     graph_selector = self.graph_uri.present? ? "<#{graph_uri.to_s}>" : "?g"
     Tripod::SparqlClient::Query.query(
       "CONSTRUCT {<#{uri}> ?p ?o} WHERE { GRAPH #{graph_selector} { <#{uri}> ?p ?o } }",
