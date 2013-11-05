@@ -15,7 +15,7 @@ module Tripod::Links
 
   module ClassMethods
 
-    # Define a link to another resource. Creates relevant fields and getter / setter.
+    # Define a link to another resource. Creates relevant fields and getter/setter methods. Note that the getter only retrives saved resources from the db.
     #
     # @example Define a link away from resources of this class to resources of class Organisation
     #   linked_to :organisation, 'http://example.com/name'
@@ -109,7 +109,7 @@ module Tripod::Links
       generated_methods.module_eval do
         re_define_method(meth) do
 
-          klass = Kernel.const_get(link.class_name)
+          klass = Kernel.eval(link.class_name)
 
           if link.multivalued?
 
