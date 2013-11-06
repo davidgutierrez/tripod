@@ -156,7 +156,7 @@ module Tripod::Finders
     # @option options [ String ] uri_variable The name of the uri variable in the query, if not 'uri'
     def _describe_query_for_select(select_sparql, opts={})
       uri_variable = opts[:uri_variable] || "uri"
-      "DESCRIBE ?#{uri_variable} WHERE { #{select_sparql} }"
+      "DESCRIBE ?#{uri_variable} WHERE {{ #{select_sparql} }}"
     end
 
     # For a select query, get a raw serialisation of the DESCRIPTION of the resources from the database.
