@@ -12,10 +12,11 @@ module Tripod
     # @option options [ String ] return_graph Indicates whether to return the graph as one of the variables.
     def resources(opts={})
       Tripod::ResourceCollection.new(
-        self.resource_class._resources_from_sparql(self.as_query(opts)),
-         # pass in the criteria that was used to generate this collection, as well as whether the user specified return graph
-        :return_graph => (opts.has_key?(:return_graph) ? opts[:return_graph] : true),
-        :criteria => self
+        self.resource_class._resources_from_sparql(self.as_query(opts),{
+           # pass in the criteria that was used to generate this collection, as well as whether the user specified return graph
+          :return_graph => (opts.has_key?(:return_graph) ? opts[:return_graph] : true),
+          :criteria => self
+        })
       )
     end
 
