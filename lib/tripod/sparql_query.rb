@@ -65,7 +65,7 @@ module Tripod
     def as_first_query_str
       check_subqueryable!
 
-      first_query = "SELECT * { #{self.body} } LIMIT 1"
+      first_query = "SELECT * {{ #{self.body} }} LIMIT 1"
       first_query = "#{self.prefixes} #{first_query}" if self.prefixes
 
       # just returns the string representing the 'first' query for this query.
