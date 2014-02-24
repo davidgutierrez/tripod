@@ -33,6 +33,7 @@ module Tripod::Links
     # @option options [ Boolean ] multivalued Is this a multi-valued field? Default is false.
     # @option options [ String ] class_name The name of the class of resource which we're linking to (normally will derive this from the link name)
     # @option options [ Symbol ] field_name the symbol of the field that will be generated (normally will just add _uri or _uris to the link name)
+    # @option options [ Boolean ] return_graph Return graph when getting resources? Default is true.
     #
     # @return [ LinkedTo ] The generated link
     def linked_to(name, predicate, options = {})
@@ -99,7 +100,7 @@ module Tripod::Links
           # note - this will only find saved ones.
           klass
             .where("?uri <#{incoming_predicate.to_s}> <#{self.uri.to_s}>")
-            .resources
+            .resources(:return_graph => link.return_graph)
         end
       end
     end
@@ -132,7 +133,7 @@ module Tripod::Links
             end
             filter_str += ")"
 
-            criteria.where(filter_str).resources
+            criteria.where(filter_str).resources(:return_graph => link.return_graph)
           else
             klass.find(read_attribute(link.field_name)) rescue nil #look it up by it's uri
           end

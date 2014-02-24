@@ -13,6 +13,7 @@ module Tripod::Links
       @incoming_field_name = incoming_field_name
       # if class name not supplied, guess from the field name
       @class_name = options[:class_name] || name.to_s.singularize.classify
+      @return_graph = options.key?(:return_graph) ? options[:return_graph] : true
 
     end
   end

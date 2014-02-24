@@ -15,6 +15,7 @@ module Tripod::Links
       @multivalued = options[:multivalued] || false
       @class_name = options[:class_name] || @name.to_s.classify
       @field_name = options[:field_name] || (@name.to_s + ( @multivalued ? "_uris" : "_uri" )).to_sym
+      @return_graph = options.key?(:return_graph) ? options[:return_graph] : true
 
     end
   end
