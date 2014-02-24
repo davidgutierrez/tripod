@@ -56,6 +56,7 @@ module Tripod::Links
     # @param [ Hash ] options The options to pass to the field.
     #
     # @option options [ String ] class_name The name of the class that links to this resource, if we can't guess it from the link name
+    # @option options [ Boolean ] return_graph Return graph when getting resources? Default is true.
     #
     # @return [ LinkedTo ] The generated link
     def linked_from(name, incoming_field_name, options = {})
