@@ -4,7 +4,7 @@ module Tripod::Links
   class LinkedTo
 
     # Set readers for the instance variables.
-    attr_accessor :name, :predicate, :options, :multivalued, :field_name, :class_name
+    attr_accessor :name, :predicate, :options, :multivalued, :field_name, :class_name, :return_graph
     alias_method :multivalued?, :multivalued
 
     # Create the new link with a name and optional additional options.

@@ -4,7 +4,7 @@ module Tripod::Links
   class LinkedFrom
 
     # Set readers for the instance variables.
-    attr_accessor :name, :incoming_field, :options, :incoming_field_name, :class_name
+    attr_accessor :name, :incoming_field, :options, :incoming_field_name, :class_name, :return_graph
 
     # Create the new link with a name and optional additional options.
     def initialize(name, incoming_field_name, options = {})
