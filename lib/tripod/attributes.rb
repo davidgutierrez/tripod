@@ -25,6 +25,11 @@ module Tripod::Attributes
 
     attr_values = read_predicate(field.predicate)
     attr_values.map! { |v| read_value_for_field(v, field) }
+    
+    # If the field is localized, keep the values of the current locale
+    if field.localized
+      attr_values.delete_if { |s| s.language != I18n.locale }
+    end
 
     # If the field is multivalued, return an array of the results
     # If it's not multivalued, return the first (should be only) result.

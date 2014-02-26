@@ -25,6 +25,9 @@ module Tripod::Fields
     # @example Define a multi-valued field (can be combined with other options)
     #   field :tags, 'http://example.com/tag', multivalued: true
     #
+    # @example Define a localized field (will return only the values of the current I18n.locale)
+    #   field :greetings, 'http://example.com/greetings', localized: true
+    #
     # @example Define a field containing a URI to another RDF resource
     #   field :knows, 'http://example.com/knows', is_uri: true
     #
@@ -34,6 +37,7 @@ module Tripod::Fields
     #
     # @option options [ String, RDF::URI ] datatype The uri of the datatype for the field (will be used to create an RDF::Literal of the right type on the way in only).
     # @option options [ Boolean ] multivalued Is this a multi-valued field? Default is false.
+    # @option options [ Boolean ] localized Is this a localized field? Default is false.
     #
     # @return [ Field ] The generated field
     def field(name, predicate, options = {})
