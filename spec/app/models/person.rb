@@ -11,6 +11,8 @@ class Person
   field :aliases, 'http://exmample.com/alias', :multivalued => true
   field :age, 'http://example.com/age', :datatype => RDF::XSD.integer
   field :important_dates, 'http://example.com/importantdates', :datatype => RDF::XSD.date, :multivalued => true
+  field :title, 'http://example.com/title', :localized => true
+  field :greetings, 'http://example.com/greeting', :multivalued => true, :localized => true
 
   linked_from :owns_dogs, :owner, class_name: 'Dog'
   linked_from :dogs, :person
