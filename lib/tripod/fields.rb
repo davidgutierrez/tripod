@@ -99,8 +99,8 @@ module Tripod::Fields
     # @param [ Field ] field The field.
     def create_field_getter(name, meth, field)
       generated_methods.module_eval do
-        re_define_method(meth) do
-          read_attribute(name, field)
+        re_define_method(meth) do |opts={}|
+          read_attribute(name, field, opts)
         end
       end
     end

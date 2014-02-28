@@ -17,17 +17,22 @@ module Tripod::Attributes
   #
   # @param [ String ] name The name of the field for which to get the value.
   # @param [ Field ] field An optional Field object
+  # @param [ Hash ] opts An optional hash of parameters.
+  #
+  # @option opts [ string ] locale If field is localized, get value for this language. If :all, will return an array with every value, even if the field is not multivalued. 
   #
   # @return Native Ruby object (e.g. String, DateTime) or array of them, depending on whether the field is multivalued or not
-  def read_attribute(name, field=nil)
+  def read_attribute(name, field=nil, opts={})
     field ||= self.fields[name]
     raise Tripod::Errors::FieldNotPresent.new unless field
 
     attr_values = read_predicate(field.predicate)
     
-    # If the field is localized, keep the values of the current locale
-    if field.localized
-      attr_values.delete_if { |s| s.language != I18n.locale }
+    # If the field is localized, keep the values of the wished locale
+    locale = opts[:locale] || I18n.locale
+    force_multivalued = locale == :all
+    if field.localized && locale != :all
+      attr_values.delete_if { |s| s.language != locale }
     end
     
     attr_values.map! { |v| read_value_for_field(v, field) }
@@ -35,7 +40,7 @@ module Tripod::Attributes
     # If the field is multivalued, return an array of the results
     # If it's not multivalued, return the first (should be only) result.
 
-    if field.multivalued
+    if field.multivalued || force_multivalued
       attr_values
     else
       attr_values.first
