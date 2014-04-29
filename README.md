@@ -8,23 +8,23 @@ I use it only as read-only and never took the time to adapt the specs config for
 
 If you want to get data from localized fields (@lang xml attribute), first declare the field as localized:
 ```ruby
-        field :title, 'http://example.com/title', :localized => true
-        field :greetings, 'http://example.com/greeting', :multivalued => true, :localized => true
+field :title, 'http://example.com/title', :localized => true
+field :greetings, 'http://example.com/greeting', :multivalued => true, :localized => true
 ```
 
 By default, only the value(s) of the current locale (I18n.locale) will be returned.
 It is possible specify the locale when getting a value or get all set values.
 ```ruby
-        barry = Person.find('http://example.com/id/barry')
-        I18n.locale = :en
-        barry.title == "Doctor"
-        barry.title(:locale => :fr) == "Docteur"
-        I18n.locale = :fr
-        barry.title == "Docteur"
-        barry.title(:locale => :all) # array, length = 2
-        I18n.locale = :es
-        barry.title? == false
-        barry.title == nil
+barry = Person.find('http://example.com/id/barry')
+I18n.locale = :en
+barry.title == "Doctor"
+barry.title(:locale => :fr) == "Docteur"
+I18n.locale = :fr
+barry.title == "Docteur"
+barry.title(:locale => :all) # array, length = 2
+I18n.locale = :es
+barry.title? == false
+barry.title == nil
 ```
 
 #Tripod
