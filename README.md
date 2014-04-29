@@ -1,4 +1,33 @@
-# Tripod
+# About this fork
+
+I forked tripod mainly to support openRDF Sesame and Virtuoso endpoints, and getters for localized fields.
+It also includes the links branch, with an added ignore-graph option.
+I use it only as read-only and never took the time to adapt the specs config for my endpoints. Please let me know if you use it successfully to update/delete content.
+
+## Quick help for localized fields
+
+If you want to get data from localized fields (@lang xml attribute), first declare the field as localized:
+```ruby
+        field :title, 'http://example.com/title', :localized => true
+        field :greetings, 'http://example.com/greeting', :multivalued => true, :localized => true
+```
+
+By default, only the value(s) of the current locale (I18n.locale) will be returned.
+It is possible specify the locale when getting a value or get all set values.
+```ruby
+        barry = Person.find('http://example.com/id/barry')
+        I18n.locale = :en
+        barry.title == "Doctor"
+        barry.title(:locale => :fr) == "Docteur"
+        I18n.locale = :fr
+        barry.title == "Docteur"
+        barry.title(:locale => :all) # array, length = 2
+        I18n.locale = :es
+        barry.title? == false
+        barry.title == nil
+```
+
+#Tripod
 
 ActiveModel-style Ruby ORM for RDF Linked Data. Works with SPARQL 1.1 HTTP endpoints.
 
