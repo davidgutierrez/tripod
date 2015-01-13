@@ -7,12 +7,12 @@ describe Tripod::Fields do
     let(:barry) do
       b = Person.new('http://example.com/id/barry')
       b.name = 'Barry'
-      
+
       I18n.locale = :en
       b.title = 'Doctor'
       I18n.locale = :fr
       b.title = 'Docteur'
-      
+
       b
     end
 
@@ -22,12 +22,12 @@ describe Tripod::Fields do
       I18n.locale = :fr
       barry.title.should == "Docteur"
     end
-    
+
     it "creates a parameter for the getter to get the data in a different locale" do
       I18n.locale = :en
       barry.title(:locale => :fr).should == "Docteur"
     end
-    
+
     it "creates a parameter for the getter to get the data from all locales" do
       I18n.locale = :en
       titles = barry.title(:locale => :all)
@@ -41,7 +41,7 @@ describe Tripod::Fields do
       barry.title = "Professor"
       barry.title.should == "Professor"
       I18n.locale = :fr
-      barry.title.should = "Docteur"
+      barry.title.should == "Docteur"
       barry.title = "Professeur"
       barry.title.should == "Professeur"
       I18n.locale = :en
@@ -59,7 +59,7 @@ describe Tripod::Fields do
         barry.title?.should == false
       end
     end
-    
+
     context "where the attribute is multi-valued" do
       before do
         I18n.locale = :en
@@ -76,7 +76,7 @@ describe Tripod::Fields do
         barry.greetings(:locale => :all).length.should == 4
       end
     end
-    
+
     I18n.locale = :en
   end
 end
