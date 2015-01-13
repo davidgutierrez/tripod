@@ -7,6 +7,8 @@ $LOAD_PATH.unshift(MODELS)
 require 'tripod'
 require 'rspec'
 require 'webmock/rspec'
+require 'binding_of_caller'
+require 'pry'
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -26,9 +28,13 @@ end
 
 # configure any settings for testing...
 Tripod.configure do |config|
-  config.update_endpoint = 'http://127.0.0.1:3030/tripod-test/update'
-  config.query_endpoint = 'http://127.0.0.1:3030/tripod-test/sparql'
-  config.data_endpoint = 'http://127.0.0.1:3030/tripod-test/data'
+  # config.update_endpoint = 'http://127.0.0.1:3030/tripod-test/update'
+  # config.query_endpoint = 'http://127.0.0.1:3030/tripod-test/sparql'
+  # config.data_endpoint = 'http://127.0.0.1:3030/tripod-test/data'
+  
+  config.update_endpoint = 'http://127.0.0.1:3002/sparql/raw/update'
+  config.query_endpoint = 'http://127.0.0.1:3002/sparql/raw'
+  #config.data_endpoint = 'http://127.0.0.1:3030/tripod-test/data'
 end
 
 # Autoload every model for the test suite that sits in spec/app/models.

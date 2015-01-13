@@ -31,19 +31,40 @@ describe Tripod::Criteria do
 
   describe "#where" do
 
-    it "should add the sparql snippet to the where clauses" do
-      resource_criteria.where("blah")
-      resource_criteria.where_clauses.should == ["?uri ?p ?o", "blah"]
+    context 'given a string' do
+      it "should add the sparql snippet to the where clauses" do
+        resource_criteria.where("blah")
+        resource_criteria.where_clauses.should == ["?uri ?p ?o", "blah"]
+      end
+
+      it "should return an instance of Criteria" do
+        resource_criteria.where("blah").class == Tripod::Criteria
+      end
+
+      it "should return an instance of Criteria with the where clauses added" do
+        resource_criteria.where("blah").where_clauses.should == ["?uri ?p ?o", "blah"]
+      end
     end
 
-    it "should return an instance of Criteria" do
-      resource_criteria.where("blah").class == Tripod::Criteria
-    end
+    context 'given a hash' do
+      context 'with a native Ruby value' do
+        let(:value) { 'blah' }
 
-    it "should return an instance of Criteria with the where clauses added" do
-      resource_criteria.where("blah").where_clauses.should == ["?uri ?p ?o", "blah"]
-    end
+        it 'should construct a sparql snippet with the appropriate predicate, treating the value as a literal' do
+          criteria = resource_criteria.where(label: value)
+          criteria.where_clauses[1].should == "?uri <#{ RDF::RDFS.label }> \"#{ value }\""
+        end
+      end
 
+      context 'with a native RDF value' do
+        let(:value) {  RDF::URI.new('http://example.com/bob') }
+
+        it 'should construct a sparql snippet with the appropriate predicate' do
+          criteria = resource_criteria.where(label: value)
+          criteria.where_clauses[1].should == "?uri <#{ RDF::RDFS.label }> <#{ value.to_s }>"
+        end
+      end
+    end
   end
 
   describe "#extras" do

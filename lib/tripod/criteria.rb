@@ -41,9 +41,16 @@ module Tripod
     # Note: the subject being returned by the query must be identified by ?uri
     # e.g. my_criteria.where("?uri a <http://my-type>")
     #
-    # TODO: make it also take a hash?
-    def where(sparql_snippet)
-      where_clauses << sparql_snippet
+    def where(filter)
+      if filter.is_a?(String) # we gotta Sparql snippet
+        where_clauses << filter
+      elsif filter.is_a?(Hash)
+        filter.each_pair do |key, value|
+          field = resource_class.get_field(key)
+          value = RDF::Literal.new(value) unless value.respond_to?(:to_base)
+          where_clauses << "?uri <#{ field.predicate }> #{ value.to_base }"
+        end
+      end
       self
     end
 

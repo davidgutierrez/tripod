@@ -23,8 +23,7 @@ module Tripod::Attributes
   #
   # @return Native Ruby object (e.g. String, DateTime) or array of them, depending on whether the field is multivalued or not
   def read_attribute(name, field=nil, opts={})
-    field ||= self.fields[name]
-    raise Tripod::Errors::FieldNotPresent.new unless field
+    field ||= self.class.get_field(name)
 
     attr_values = read_predicate(field.predicate)
 
@@ -35,15 +34,18 @@ module Tripod::Attributes
       attr_values.delete_if { |s| s.language != locale }
     end
 
-    attr_values.map! { |v| read_value_for_field(v, field) }
-
-    # If the field is multivalued, return an array of the results
-    # If it's not multivalued, return the first (should be only) result.
-
     if field.multivalued || force_multivalued
-      attr_values
+      # If the field is multivalued, return an array of the results
+      # just return the uri or the value of the literal.
+      attr_values.map { |v| field.is_uri? ? v :  v.object }
     else
-      attr_values.first
+      # If it's not multivalued, return the first (should be only) result.
+      if field.is_uri?
+        attr_values.first
+      else
+        val = attr_values.first || attr_values.first
+        val.object if val
+      end
     end
   end
   alias :[] :read_attribute
@@ -83,19 +85,11 @@ module Tripod::Attributes
 
   private
 
-  def read_value_for_field(value, field)
-    if field.is_uri?
-      value
-    else
-      value.object
-    end
-  end
-
   def write_value_for_field(value, field)
     return if value.blank?
 
     if field.is_uri?
-      uri = RDF::URI.new(value.to_s)
+      uri = RDF::URI.new(value.to_s.strip)
     elsif field.datatype
       RDF::Literal.new(value, :datatype => field.datatype)
     else
