@@ -53,9 +53,9 @@ module Tripod
     def as_count_query_str
       check_subqueryable!
 
-      count_query = "SELECT (COUNT(*) as ?tripod_count_var) {
+      count_query = "SELECT (COUNT(*) as ?tripod_count_var) {{
   #{self.body}
-}"
+}}"
       count_query = "#{self.prefixes} #{count_query}" if self.prefixes
 
       # just returns the string representing the count query for this query.

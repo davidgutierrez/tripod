@@ -31,7 +31,7 @@ module Tripod::Attributes
     locale = opts[:locale] || I18n.locale
     force_multivalued = !field.is_uri? && locale == :all
     if !field.is_uri? && field.localized && locale != :all
-      attr_values.delete_if { |s| s.language != locale }
+      attr_values = attr_values.select { |s| s.language == locale }
     end
 
     if field.multivalued || force_multivalued
