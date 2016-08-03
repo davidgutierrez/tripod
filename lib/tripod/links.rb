@@ -134,9 +134,9 @@ module Tripod::Links
             end
             filter_str += ")"
 
-            criteria.where(filter_str).resources(:return_graph => link.return_graph)
+            criteria.where(filter_str).resources(return_graph: link.return_graph)
           else
-            klass.find(read_attribute(link.field_name)) rescue nil #look it up by it's uri
+            klass.find(read_attribute(link.field_name), ignore_graph: !link.return_graph) rescue nil #look it up by it's uri
           end
 
         end
